@@ -20,6 +20,12 @@
       "id": 4,
       "idParent": null,
       "name": "Красота и здоровье"
+    },
+    {
+      "id": 5,
+      "idParent": null,
+      "name": "Техника",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/2048px-BMW_logo_%28gray%29.svg.png"
     }
   ],
   "items": [
@@ -59,7 +65,7 @@
       "product": {
         "id": 1,
         "name": "Утюг 2",
-        "price": 190000
+        "price": 192000
       }
     },
     {
@@ -68,7 +74,34 @@
       "product": {
         "id": 1,
         "name": "Шампунь Утюг 2",
+        "price": 100000
+      }
+    },
+    {
+      "id": 104,
+      "idGroup": 4,
+      "product": {
+        "id": 1,
+        "name": "Шампунь для себя",
         "price": 190000
+      }
+    },
+    {
+      "id": 105,
+      "idGroup": 5,
+      "product": {
+        "id": 1,
+        "name": "Шампунь для чего-то еще",
+        "price": 170000
+      }
+    },
+    {
+      "id": 106,
+      "idGroup": 5,
+      "product": {
+        "id": 2,
+        "name": "Шампунь для машин evon",
+        "price": 120000
       }
     }
   ]
