@@ -1,0 +1,77 @@
+{
+  "groups": [
+    {
+      "id": 1,
+      "idParent": null,
+      "name": "Бытовая техника",
+      "logo": "/logo/logo1.png"
+    },
+    {
+      "id": 2,
+      "idParent": 1,
+      "name": "Техника для кухни"
+    },
+    {
+      "id": 3,
+      "idParent": 1,
+      "name": "Техника для дома"
+    },
+    {
+      "id": 4,
+      "idParent": null,
+      "name": "Красота и здоровье"
+    }
+  ],
+  "items": [
+    {
+      "id": 109,
+      "idGroup": 4,
+      "product": {
+        "id": 3,
+        "name": "Шампунь Чистая линия",
+        "price": 32000,
+        "description": "Сделает ваши волосы неотразимыми",
+        "weight": 1,
+        "unitType": "л."
+      }
+    },
+    {
+      "id": 100,
+      "idGroup": 3,
+      "product": {
+        "id": 1,
+        "name": "Утюг",
+        "price": 190000
+      }
+    },
+    {
+      "id": 101,
+      "idGroup": null,
+      "product": {
+        "id": 1,
+        "name": "Прочий товар, без каталога",
+        "price": 14600
+      }
+    },
+    {
+      "id": 103,
+      "idGroup": 3,
+      "product": {
+        "id": 1,
+        "name": "Утюг 2",
+        "price": 190000
+      }
+    },
+    {
+      "id": 103,
+      "idGroup": 1,
+      "product": {
+        "id": 1,
+        "name": "Шампунь Утюг 2",
+        "price": 190000
+      }
+    }
+  ]
+}
+
+
