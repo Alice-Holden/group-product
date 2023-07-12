@@ -31,6 +31,7 @@
       >
         <div
             class="d-flex"
+            style="padding: 30px"
             @click="openProducts(group.id)"
         >
           <div
@@ -52,6 +53,7 @@
               v-for="subgroup in getSubGroups(group.id)"
               :key="subgroup.id"
               class="product-menu__item"
+              style="padding: 30px"
               title="Нажмите, чтобы открыть товары"
               @click="openProducts(subgroup.id)"
           >
@@ -151,7 +153,6 @@ export default {
 
 
   &__item{
-    padding: 30px;
     position: relative;
     cursor: pointer;
     color: #066786;

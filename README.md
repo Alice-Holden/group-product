@@ -3,7 +3,7 @@
 ## Установка зависимостей
 ```
 npm install
-npm postinstall
+npm run postinstall
 ```
 
 ### Запустить приложение в режиме разработки для electron
