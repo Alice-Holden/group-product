@@ -23,7 +23,7 @@
   <div>
     <div class="product-menu">
       <div
-          v-for="group in getRootGroups()"
+          v-for="group in groups"
           :key="group.id"
           title="Наведите, чтобы открыть подменю"
           class="product-menu__item d-flex"
@@ -46,11 +46,11 @@
           <div>{{group.name}}</div>
         </div>
         <div
-            v-if="getSubGroups(group.id).length > 0"
+            v-if="group.getSubGroups().length > 0"
             class="product-menu__submenu"
         >
           <div
-              v-for="subgroup in getSubGroups(group.id)"
+              v-for="subgroup in group.getSubGroups()"
               :key="subgroup.id"
               class="product-menu__item"
               style="padding: 30px"
@@ -68,12 +68,12 @@
           class="product-menu__products"
       >
         <div
-            v-for="item in getItems(openProductsId)"
-            :key="item.id"
+            v-for="product in getProductsToDisplay(openProductsId)"
+            :key="product.id"
             class="product-menu__product"
         >
-          <div class="product-menu__title">{{item.product.name}}</div>
-          <div v-if="item.product.price > 0">Цена: {{(item.product.price)/100}} руб.</div>
+          <div class="product-menu__title">{{product.info.name}}</div>
+          <div v-if="product.info.price > 0">Цена: {{(product.info.price)/100}} руб.</div>
         </div>
       </div>
     </div>
@@ -83,12 +83,12 @@
           class="product-menu__products"
       >
         <div
-            v-for="item in showFoundProducts"
-            :key="item.id"
+            v-for="product in showFoundProducts"
+            :key="product.id"
             class="product-menu__product"
         >
-          <div class="product-menu__title">{{item.product.name}}</div>
-          <div v-if="item.product.price > 0">Цена: {{(item.product.price)/100}} руб.</div>
+          <div class="product-menu__title">{{product.info.name}}</div>
+          <div v-if="product.info.price > 0">Цена: {{(product.info.price)/100}} руб.</div>
         </div>
       </div>
     </div>
@@ -96,10 +96,33 @@
 </template>
 
 <script>
-/**
- * { "groups": [ { "id": 1, "idParent": null, "name": "Бытовая техника", "logo": "адрес до логотипа, может быть как локальный с диска, так и получаемый по сети" }, { "id": 2, "idParent": 1, "name": "Техника для кухни" }, { "id": 3, "idParent": 1, "name": "Техника для дома" }, { "id": 4, "idParent": null, "name": "Красота и здоровье" } ], "items": [ { "id": 109, "idGroup": 4, "product": { "id": 3, "name": "Шампунь Чистая линия", "price": 32000, "description": "Сделает ваши волосы неотразимыми", "weight": 1, "unitType": "л." } }, { "id": 100, "idGroup": 3, "product": { "id": 1, "name": "Утюг", "price": 190000 } }, { "id": 101, "idGroup": null, "product": { "id": 1, "name": "Прочий товар, без каталога", "price": 14600 } } ] }
- */
 import struct from '../struct.json';
+
+// Define class Group what contains group attributes and have getSubGroups and getProducts methods
+class Group {
+  constructor(group) {
+    this.id = group.id;
+    this.idParent = group.idParent;
+    this.name = group.name;
+    this.logo = group.logo;
+  }
+
+  getSubGroups() {
+    return struct.groups.filter(group => group.idParent === this.id);
+  }
+
+  getProducts() {
+    return struct.items.filter(item => item.idGroup === this.id).map(item => new Product(item));
+  }
+}
+
+class Product {
+  constructor(item) {
+    this.id = item.id;
+    this.idGroup = item.idGroup;
+    this.info = item.product;
+  }
+}
 
 export default {
   name: "ProductGroupMenu",
@@ -113,18 +136,19 @@ export default {
       showFoundProducts: []
     };
   },
-  methods:{
-    getRootGroups(){
-      return [...this.struct.groups.filter(group => group.idParent === null), {id: null, "idParent": null,  name: 'Прочие товары'}]
+  computed: {
+    groups() {
+      return this.struct.groups.map(group => new Group(group));
     },
-    getSubGroups(idParent){
-      if (idParent === null){
+  },
+  methods:{
+    getProductsToDisplay(idGroup){
+      const group = this.struct.groups.find(group => group.id === idGroup);
+      if (group === undefined){
         return [];
       }
-      return this.struct.groups.filter(group => group.idParent === idParent)
-    },
-    getItems(idGroup){
-      return this.struct.items.filter(item => item.idGroup === idGroup)
+
+      return new Group(group).getProducts();
     },
     //показываем товары по id группы
     openProducts(idGroup){
@@ -135,7 +159,9 @@ export default {
     //поиск товара по наименованию
     searchProduct(){
       let search = this.search.toLowerCase();
-      this.showFoundProducts  = this.struct.items.filter(item => item.product.name.toLowerCase().includes(search));
+      this.showFoundProducts  = this.struct.items
+          .filter(item => item.product.name.toLowerCase().includes(search))
+          .map(item => new Product(item));
     }
   }
 }
